@@ -22,4 +22,20 @@ export class HackatticService {
 
         return parsedData.image_url;
     }
+
+    public async solve(data: any) {
+
+        var options = {
+            method: 'POST',
+            uri: this.baseUrl.replace('problem', 'solve') + this.accessToken,
+            body: {
+                face_tiles: data
+            },
+            json: true
+        };
+
+        console.log(options);
+
+        return request.post(options);
+    }
 }
