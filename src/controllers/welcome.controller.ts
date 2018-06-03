@@ -38,11 +38,15 @@ router.get('/', async (_req: Request, res: Response) => {
 
         console.warn(err);
 
-        rekognition.detectFaces('ls-image-recognition', 'media/img.jpg', (err, data) => {
+        rekognition.detectFaces('ls-image-recognition', 'media/img.jpg', async (err, data) => {
 
             console.warn(err);
 
-            console.warn(faceDetection.parseData(data));
+            const positions = faceDetection.findPositions(faceDetection.parseData(data));
+
+            const teste = await hackattic.solve(positions);
+
+            console.log(teste);
 
             res.send(result);
         });
