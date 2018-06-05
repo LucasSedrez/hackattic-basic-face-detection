@@ -25,7 +25,7 @@ export class HackatticService {
 		return parsedData.image_url;
 	}
 
-	public async solve(data: any) {
+	public async solve(positions: number[][]) {
 
 		let uri = this.baseUrl.replace('{type}', 'solve') + this.accessToken;
 
@@ -38,7 +38,7 @@ export class HackatticService {
 			method: 'POST',
 			uri,
 			body: {
-				face_tiles: data
+				face_tiles: positions
 			},
 			json: true
 		};
