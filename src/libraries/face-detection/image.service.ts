@@ -1,13 +1,13 @@
 import sharp from 'sharp';
 import { DetectFacesResponse } from 'aws-sdk/clients/rekognition';
-import { FaceDetectionService } from './face-detection.service';
+import { PositionsService } from './';
 import { S3Service } from '../aws/s3.service';
 import { BUCKET_NAME, IMAGE_PATH, FINAL_IMAGE_PATH } from '../../common/settings/general';
 
-export class FaceDetectionImage {
+export class ImageService {
 
 	constructor(
-		private service: FaceDetectionService,
+		private service: PositionsService,
 		private s3: S3Service
 	) { }
 

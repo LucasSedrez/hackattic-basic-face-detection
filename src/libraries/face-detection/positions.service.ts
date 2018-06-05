@@ -2,7 +2,7 @@ import { findPosition, centerOfSquare } from '../../common/helpers/position.help
 import { IMAGE_HEIGHT, IMAGE_WIDTH } from '../../common/settings/general';
 import { DetectFacesResponse } from 'aws-sdk/clients/rekognition';
 
-export class FaceDetectionService {
+export class PositionsService {
 
 	public getBoundingBoxesPositions(detectFacesReponse: DetectFacesResponse) {
 
