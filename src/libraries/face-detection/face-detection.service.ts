@@ -1,4 +1,4 @@
-import { findCoordinates, centerCoordinate } from '../../common/helpers/position.helper';
+import { findPosition, centerOfSquare } from '../../common/helpers/position.helper';
 import { IMAGE_HEIGHT, IMAGE_WIDTH } from '../../common/settings/general';
 import { DetectFacesResponse } from 'aws-sdk/clients/rekognition';
 
@@ -44,8 +44,8 @@ export class FaceDetectionService {
 				if (boundingBox) {
 
 					positions.push([
-						findCoordinates(centerCoordinate(boundingBox.x, boundingBox.width)),
-						findCoordinates(centerCoordinate(boundingBox.y, boundingBox.height))
+						findPosition(centerOfSquare(boundingBox.x, boundingBox.width)),
+						findPosition(centerOfSquare(boundingBox.y, boundingBox.height))
 					]);
 				}
 			});

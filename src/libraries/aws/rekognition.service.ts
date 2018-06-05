@@ -28,8 +28,9 @@ export class RekognitionService {
 
 	public detectFaces(bucket: string, imageName: string) {
 
-		return new Promise((resolve, reject) => {
-			this.getInstance().detectFaces({
+		return new Promise<Rekognition.DetectFacesResponse>((resolve, reject) => {
+
+			return this.getInstance().detectFaces({
 				Image: {
 					S3Object: {
 						Bucket: bucket,

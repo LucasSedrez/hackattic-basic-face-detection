@@ -1,16 +1,16 @@
-export function centerCoordinate(coordinate: number, dimension: number) {
+export function centerOfSquare(coordinate: number, dimension: number) {
 
 	return coordinate + (dimension / 2);
 }
 
-export function findCoordinates(value: number) {
+export function findPosition(value: number) {
 
-	value = Math.floor(value / 100);
+	let position = Math.floor(value / 100);
 
-	if (value % 100) {
+	if (value % 100 === 0) {
 
-		value - 1;
+		position = position - 1;
 	}
 
-	return value;
+	return position;
 }
