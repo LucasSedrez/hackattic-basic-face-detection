@@ -29,22 +29,22 @@ export class FaceDetectionImage {
 
 	private generateSvgs(detectFacesReponse: DetectFacesResponse) {
 
-		const xyPositions = this.service.getXY(detectFacesReponse);
+		const boundingBoxesPositions = this.service.getBoundingBoxesPositions(detectFacesReponse);
 
 		let svgs = '';
 
-		if (xyPositions) {
+		if (boundingBoxesPositions) {
 
 			svgs = `<svg width="800" height="800">`;
 
-			xyPositions.forEach(element => {
+			boundingBoxesPositions.forEach(boundingBox => {
 
-				if (element) {
+				if (boundingBox) {
 					svgs += `<rect 
-						 x="${element.x.toString()}" 
-						 y="${element.y.toString()}"
-						 width="${element.width.toString()}" 
-						 height="${element.height.toString()}"
+						 x="${boundingBox.x.toString()}" 
+						 y="${boundingBox.y.toString()}"
+						 width="${boundingBox.width.toString()}" 
+						 height="${boundingBox.height.toString()}"
 						 style="stroke-width:3;stroke:rgb(255,0,0);fill:rgba(124,240,10,0.5);" />`;
 				}
 			});
