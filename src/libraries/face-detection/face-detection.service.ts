@@ -1,31 +1,51 @@
-import { convertToPixels, findCoordinates } from '../../common/helpers/position.helper';
+import { findCoordinates } from '../../common/helpers/position.helper';
+import { IMAGE_HEIGHT, IMAGE_WIDTH } from '../../common/settings/general';
+import { DetectFacesResponse } from 'aws-sdk/clients/rekognition';
 
 export class FaceDetectionService {
 
-    public parseData(data: any) {
+	public getXY(detectFacesReponse: DetectFacesResponse) {
 
-        return data.FaceDetails.map(record => {
+		const faces = { ...detectFacesReponse };
 
-            return {
-                'top': record.BoundingBox.Top,
-                'left': record.BoundingBox.Left
-            }
-        });
-    }
+		if (faces && faces.FaceDetails) {
 
-    public findPositions(data: any) {
+			return faces.FaceDetails.map(record => {
 
-        const positions: number[][] = [];
+				if (record.BoundingBox &&
+					record.BoundingBox.Left &&
+					record.BoundingBox.Top &&
+					record.BoundingBox.Width &&
+					record.BoundingBox.Height) {
 
-        const dataInPixels = convertToPixels(data, 800);
+					return {
+						'x': record.BoundingBox.Left * IMAGE_WIDTH,
+						'y': record.BoundingBox.Top * IMAGE_HEIGHT,
+						'width': record.BoundingBox.Width * IMAGE_WIDTH,
+						'height': record.BoundingBox.Height * IMAGE_HEIGHT
+					}
+				}
+			}).filter(fd => fd !== undefined);
+		}
+	}
 
-        dataInPixels.forEach(record => {
+	public findPositions(detectFacesReponse: DetectFacesResponse) {
 
-            positions.push([findCoordinates(record.top), findCoordinates(record.left)]);
-        });
+		const xyPositions = this.getXY(detectFacesReponse);
 
-        console.log(positions);
+		const positions: number[][] = [];
 
-        return positions;
-    }
+		if (xyPositions) {
+
+			xyPositions.forEach(record => {
+
+				if (record) {
+
+					positions.push([findCoordinates(record.x), findCoordinates(record.y)]);
+				}
+			});
+		}
+
+		return positions;
+	}
 }
