@@ -1,1 +1,1 @@
-export * from './welcome.controller';
+export * from './basic-face-detection.controller';
