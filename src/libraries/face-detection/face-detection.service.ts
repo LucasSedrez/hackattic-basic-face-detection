@@ -1,10 +1,10 @@
-import { findCoordinates } from '../../common/helpers/position.helper';
+import { findCoordinates, centerCoordinate } from '../../common/helpers/position.helper';
 import { IMAGE_HEIGHT, IMAGE_WIDTH } from '../../common/settings/general';
 import { DetectFacesResponse } from 'aws-sdk/clients/rekognition';
 
 export class FaceDetectionService {
 
-	public getXY(detectFacesReponse: DetectFacesResponse) {
+	public getBoundingBoxesPositions(detectFacesReponse: DetectFacesResponse) {
 
 		const faces = { ...detectFacesReponse };
 
@@ -27,21 +27,26 @@ export class FaceDetectionService {
 				}
 			}).filter(fd => fd !== undefined);
 		}
+
+		throw new Error('Can\'t get the bounding boxes positions!');
 	}
 
 	public findPositions(detectFacesReponse: DetectFacesResponse) {
 
-		const xyPositions = this.getXY(detectFacesReponse);
+		const boundingBoxesPositions = this.getBoundingBoxesPositions(detectFacesReponse);
 
 		const positions: number[][] = [];
 
-		if (xyPositions) {
+		if (boundingBoxesPositions) {
 
-			xyPositions.forEach(record => {
+			boundingBoxesPositions.forEach(boundingBox => {
 
-				if (record) {
+				if (boundingBox) {
 
-					positions.push([findCoordinates(record.x + (record.width / 2)), findCoordinates(record.y + (record.height / 2))]);
+					positions.push([
+						findCoordinates(centerCoordinate(boundingBox.x, boundingBox.width)),
+						findCoordinates(centerCoordinate(boundingBox.y, boundingBox.height))
+					]);
 				}
 			});
 		}

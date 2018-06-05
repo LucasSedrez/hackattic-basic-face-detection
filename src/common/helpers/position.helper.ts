@@ -1,3 +1,8 @@
+export function centerCoordinate(coordinate: number, dimension: number) {
+
+	return coordinate + (dimension / 2);
+}
+
 export function findCoordinates(value: number) {
 
 	value = Math.floor(value / 100);
