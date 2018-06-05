@@ -8,7 +8,6 @@ import { BUCKET_NAME, IMAGE_PATH } from '../common/settings/general';
 import { RekognitionService } from '../libraries/aws/rekognition.service';
 import { FaceDetectionService } from '../libraries/face-detection/face-detection.service';
 import { FaceDetectionImage } from '../libraries/face-detection/face-detection-image.service';
-import { resolve } from 'path';
 
 const router: Router = Router();
 
@@ -33,9 +32,10 @@ router.get('/solve', async (_req: Request, res: Response, next) => {
 		const solve = await hackattic.solve(positions);
 		console.warn(solve);
 
-		await faceDetectionImage.generateImage(detectedFaces);
+		const finalImage = await faceDetectionImage.generateImage(detectedFaces);
 
-		return res.sendFile(resolve(__dirname + '../../../final.jpg'));
+		res.contentType('image/jpeg');
+		return res.send(finalImage.Body);
 
 	} catch (err) {
 

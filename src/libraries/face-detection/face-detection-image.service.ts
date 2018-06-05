@@ -2,7 +2,7 @@ import sharp from 'sharp';
 import { DetectFacesResponse } from 'aws-sdk/clients/rekognition';
 import { FaceDetectionService } from './face-detection.service';
 import { S3Service } from '../aws/s3.service';
-import { BUCKET_NAME, IMAGE_PATH } from '../../common/settings/general';
+import { BUCKET_NAME, IMAGE_PATH, FINAL_IMAGE_PATH } from '../../common/settings/general';
 
 export class FaceDetectionImage {
 
@@ -10,6 +10,22 @@ export class FaceDetectionImage {
 		private service: FaceDetectionService,
 		private s3: S3Service
 	) { }
+
+	public async generateImage(detectFacesReponse: DetectFacesResponse) {
+
+		const image = await this.s3.getImage(BUCKET_NAME, IMAGE_PATH);
+
+		const svgs = new Buffer(this.generateSvgs(detectFacesReponse));
+
+		if (image.Body) {
+
+			const finalImage = await sharp(image.Body as Buffer).overlayWith(svgs, { top: 0, left: 0 }).toBuffer();
+
+			return this.saveToS3(finalImage);
+		}
+
+		throw new Error('Can\'t generate the image!');
+	}
 
 	private generateSvgs(detectFacesReponse: DetectFacesResponse) {
 
@@ -39,17 +55,14 @@ export class FaceDetectionImage {
 		return svgs;
 	}
 
-	public async generateImage(detectFacesReponse: DetectFacesResponse) {
+	private async saveToS3(finalImage: Buffer) {
 
-		const image = await this.s3.getImage(BUCKET_NAME, IMAGE_PATH);
+		await this.s3.putObject({
+			Bucket: BUCKET_NAME,
+			Key: FINAL_IMAGE_PATH,
+			Body: finalImage
+		});
 
-		const svgs = new Buffer(this.generateSvgs(detectFacesReponse));
-
-		if (image.Body) {
-
-			return sharp(image.Body as Buffer).overlayWith(svgs, { top: 0, left: 0 }).toFile('final.jpg');
-		}
-		
-		throw new Error('ERRO AO GERAR IMAGEM!');
+		return this.s3.getImage(BUCKET_NAME, FINAL_IMAGE_PATH);
 	}
 }

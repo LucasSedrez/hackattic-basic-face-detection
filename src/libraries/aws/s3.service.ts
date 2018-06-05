@@ -26,6 +26,17 @@ export class S3Service {
 		return this.s3;
 	}
 
+	public putObject(params: S3.PutObjectRequest) {
+
+		return new Promise<S3.PutObjectOutput>((resolve, reject) => {
+
+			return this.getInstance().putObject(params, (err, data) => {
+
+				return err ? reject(err) : resolve(data);
+			});
+		});
+	}
+
 	public async uploadImageFromUrl(url: string, bucket: string, key: string) {
 
 		const options = {
@@ -35,21 +46,10 @@ export class S3Service {
 
 		const response = await request.get(options);
 
-		return new Promise((resolve, reject) => {
-
-			return this.getInstance().putObject({
-				Bucket: bucket,
-				Key: key,
-				Body: response
-			}, (err, data) => {
-
-				if (err) {
-
-					return reject(err);
-				}
-
-				return resolve(data);
-			});
+		return this.putObject({
+			Bucket: bucket,
+			Key: key,
+			Body: response
 		});
 	}
 
