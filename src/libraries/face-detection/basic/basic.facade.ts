@@ -14,7 +14,7 @@ export class BasicFacade {
 		private imageService: ImageService
 	) { }
 
-	private async detectFaces() {
+	public async detectFaces() {
 
 		const imageUrl = await this.hackattic.getImageUrl();
 
