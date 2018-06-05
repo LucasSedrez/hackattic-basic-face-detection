@@ -17,6 +17,8 @@
 	"coverageDirectory": "<rootDir>/coverage",
 	"collectCoverageFrom": [
 		"src/**",
+		"!src/common/settings/**",
+		"!src/controllers/**",
 		"!**/node_modules/**",
 		"!**/dist/**"
 	]
