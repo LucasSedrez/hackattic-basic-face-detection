@@ -41,7 +41,7 @@ export class FaceDetectionService {
 
 				if (record) {
 
-					positions.push([findCoordinates(record.x), findCoordinates(record.y)]);
+					positions.push([findCoordinates(record.x + (record.width / 2)), findCoordinates(record.y + (record.height / 2))]);
 				}
 			});
 		}
