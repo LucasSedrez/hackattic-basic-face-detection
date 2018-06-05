@@ -12,15 +12,15 @@ const router: Router = Router();
 
 router.get('/solve', async (_req: Request, res: Response, next) => {
 
+	const hackattic = new HackatticService(ACCESS_TOKEN, true);
+	const s3 = new S3Service(S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY);
+	const rekognition = new RekognitionService(REKOGNITION_ACCESS_KEY, REKOGNITION_SECRET_ACCESS_KEY);
+	const positionsService = new PositionsService();
+	const imageService = new ImageService(positionsService, s3);
+
+	const facade = new BasicFacade(s3, rekognition, hackattic, positionsService, imageService);
+
 	try {
-
-		const hackattic = new HackatticService(ACCESS_TOKEN, true);
-		const s3 = new S3Service(S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY);
-		const rekognition = new RekognitionService(REKOGNITION_ACCESS_KEY, REKOGNITION_SECRET_ACCESS_KEY);
-		const positionsService = new PositionsService();
-		const imageService = new ImageService(positionsService, s3);
-
-		const facade = new BasicFacade(s3, rekognition, hackattic, positionsService, imageService);
 
 		const solve = await facade.solveTheProblem();
 
