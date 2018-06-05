@@ -15,7 +15,7 @@ router.get('/solve', async (_req: Request, res: Response, next) => {
 
 	try {
 
-		const hackattic = new HackatticService(ACCESS_TOKEN);
+		const hackattic = new HackatticService(ACCESS_TOKEN, true);
 		const s3 = new S3Service(S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY);
 		const rekognition = new RekognitionService(REKOGNITION_ACCESS_KEY, REKOGNITION_SECRET_ACCESS_KEY);
 		const faceDetectonService = new FaceDetectionService();

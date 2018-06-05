@@ -3,10 +3,11 @@ import { ImageUrl } from "./interfaces/image-url.interface";
 
 export class HackatticService {
 
-	private baseUrl = 'https://hackattic.com/challenges/basic_face_detection/problem';
+	private baseUrl = 'https://hackattic.com/challenges/basic_face_detection/{type}';
 	private accessToken = '?access_token=';
+	private playground = '&playground=1';
 
-	constructor(apiKey: string) {
+	constructor(apiKey: string, private isPlayground: boolean) {
 
 		this.accessToken += apiKey;
 	}
@@ -14,7 +15,7 @@ export class HackatticService {
 	public async getImageUrl(): Promise<string> {
 
 		var options = {
-			uri: this.baseUrl + this.accessToken
+			uri: this.baseUrl.replace('{type}', 'problem') + this.accessToken
 		};
 
 		const data = await request.get(options);
@@ -26,9 +27,16 @@ export class HackatticService {
 
 	public async solve(data: any) {
 
+		let uri = this.baseUrl.replace('{type}', 'solve') + this.accessToken;
+
+		if (this.isPlayground) {
+
+			uri += this.playground;
+		}
+
 		var options = {
 			method: 'POST',
-			uri: this.baseUrl.replace('problem', 'solve') + this.accessToken + '&playground=1',
+			uri,
 			body: {
 				face_tiles: data
 			},
