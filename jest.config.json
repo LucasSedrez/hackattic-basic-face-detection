@@ -1,0 +1,25 @@
+{
+	"transform": {
+		"\\.(ts)$": "ts-jest"
+	},
+	"testMatch": [
+		"**/?(*.)(spec).ts"
+	],
+	"moduleFileExtensions": [
+		"ts",
+		"tsx",
+		"js",
+		"jsx",
+		"json",
+		"node"
+	],
+	"collectCoverage": true,
+	"coverageDirectory": "<rootDir>/coverage",
+	"collectCoverageFrom": [
+		"src/**",
+		"!src/common/settings/**",
+		"!src/controllers/**",
+		"!**/node_modules/**",
+		"!**/dist/**"
+	]
+}

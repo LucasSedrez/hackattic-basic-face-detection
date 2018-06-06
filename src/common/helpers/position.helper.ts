@@ -1,41 +1,16 @@
-export function convertToPixels(ratios: any, pixelSize: number) {
+export function centerOfSquare(coordinate: number, dimension: number) {
 
-    return ratios.map(ratio => {
-
-        ratio.top *= pixelSize;
-        ratio.left *= pixelSize;
-
-        return ratio;
-    });
+	return coordinate + (dimension / 2);
 }
 
-export function findCoordinates(value: number) {
+export function findPosition(value: number) {
 
-    if (value <= 100) {
+	let position = Math.floor(value / 100);
 
-        return 0;
-    } else if (value <= 200) {
+	if (value % 100 === 0) {
 
-        return 1;
-    } else if (value <= 300) {
+		position = position - 1;
+	}
 
-        return 2;
-    } else if (value <= 400) {
-
-        return 3;
-    } else if (value <= 500) {
-
-        return 4;
-    } else if (value <= 600) {
-
-        return 5;
-    } else if (value <= 700) {
-
-        return 6;
-    } else if (value <= 800) {
-
-        return 7;
-    }
-
-    return value;
+	return position;
 }
