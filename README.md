@@ -1,4 +1,4 @@
-# Hackttic Basic Face Detection
+# Hackattic Basic Face Detection
 This project solves the basic face detection problem from Hackattic website: https://hackattic.com/challenges/basic_face_detection.
 
 ## Installation instructions:
