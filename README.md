@@ -6,6 +6,12 @@ This project solves the basic face detection problem from Hackattic website: htt
 - Inside the project folder, execute: `npm install`
 - Than execute `npm run dev`
 
+## Configuration instructions:
+
+Set your credentials in :
+- src/common/settings/**hackattic.credentials.ts** 
+- src/common/settings/**aws.credentials.ts**
+
 ## API Reference
 
 > /basic-face-detection/solve
